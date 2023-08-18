@@ -39,7 +39,7 @@ class Engineer {
     }
 }
 
-class projectManager {
+class ProjectManager {
     var engineer: Engineer?
 
     func addTaskToEngineer(_ numberOfTasks: Int = 1) {
@@ -47,7 +47,7 @@ class projectManager {
     }
 }
 
-extension projectManager:EngineerDelegate {
+extension ProjectManager: EngineerDelegate {
     func tasksHasEnded() {
         print("Client: Give me new tasks")
     }
@@ -61,8 +61,31 @@ extension projectManager:EngineerDelegate {
     }
 }
 
+class Client  {
+    var engineer: Engineer?
+}
+
+extension Client: EngineerDelegate {
+    func tasksHasEnded() {
+        //think about requirements
+        // think about tasks
+        print("Add tasks to engineer")
+        engineer?.tasks += 1
+    }
+
+    func didFinishResearch(data: String) {
+        engineer?.tasks += 2
+    }
+
+    func didFinishAnalyzeRequirements(result: [String]) {
+        print("Answers")
+    }
+
+
+}
+
 var engineer = Engineer()
-var manager = projectManager()
+var manager = ProjectManager()
 engineer.delegate = manager
 manager.engineer = engineer
 manager.addTaskToEngineer()
@@ -82,3 +105,17 @@ engineer.tasks
 // 1. protocol
 // 2. obj1: property weak var delegate: ProtocolDelegate?
 // 3. obj2: :ProtocolDelegate
+
+//disconnect. manager dismissed. engineer on bench
+manager.engineer = nil
+engineer.delegate = nil
+
+var client = Client()
+client.engineer = engineer
+engineer.delegate = client
+
+engineer.tasks
+engineer.tasks += 1
+engineer.tasks
+engineer.taskDone()
+engineer.tasks
