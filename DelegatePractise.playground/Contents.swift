@@ -5,19 +5,24 @@ import UIKit
 // 3. obj2: :ProtocolDelegate
 
 //AnyObject now we can make delegate as weak property
-protocol EngineerDelegate: AnyObject {
+protocol EngineerTaskDelegate: AnyObject {
     func tasksHasEnded()
     func didFinishResearch(data: String)
     func didFinishAnalyzeRequirements(result: [String])
 }
 
+protocol EngineerConferenceDelegate: AnyObject {
+    func didCreatePresentation()
+}
+
 class Engineer {
-    weak var delegate: EngineerDelegate?
+    weak var taskDelegate: EngineerTaskDelegate?
+    weak var conferenceDelegate: EngineerConferenceDelegate?
 
     var tasks: Int = 0 {
         didSet {
             if tasks == 0 {
-                delegate?.tasksHasEnded()
+                taskDelegate?.tasksHasEnded()
             }
         }
     }
@@ -30,14 +35,14 @@ class Engineer {
         //google
         //create doment
         //review doc
-        delegate?.didFinishResearch(data: "document")
+        taskDelegate?.didFinishResearch(data: "document")
     }
 
     func analyze(requirements: [String]) {
         //read
         //questions
         //document
-        delegate?.didFinishAnalyzeRequirements(result: ["question 1", "question 2"])
+        taskDelegate?.didFinishAnalyzeRequirements(result: ["question 1", "question 2"])
     }
 }
 
@@ -49,7 +54,7 @@ class ProjectManager {
     }
 }
 
-extension ProjectManager: EngineerDelegate {
+extension ProjectManager: EngineerTaskDelegate {
     func tasksHasEnded() {
         print("Client: Give me new tasks")
     }
@@ -67,7 +72,7 @@ class Client  {
     var engineer: Engineer?
 }
 
-extension Client: EngineerDelegate {
+extension Client: EngineerTaskDelegate {
     func tasksHasEnded() {
         //think about requirements
         // think about tasks
