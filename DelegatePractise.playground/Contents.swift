@@ -1,6 +1,8 @@
 import UIKit
 
-var greeting = "Hello, playground"
+// 1. protocol
+// 2. obj1: property weak var delegate: ProtocolDelegate?
+// 3. obj2: :ProtocolDelegate
 
 //AnyObject now we can make delegate as weak property
 protocol EngineerDelegate: AnyObject {
@@ -102,9 +104,6 @@ engineer.tasks
 engineer.taskDone(2)
 
 engineer.tasks
-// 1. protocol
-// 2. obj1: property weak var delegate: ProtocolDelegate?
-// 3. obj2: :ProtocolDelegate
 
 //disconnect. manager dismissed. engineer on bench
 manager.engineer = nil
@@ -119,3 +118,45 @@ engineer.tasks += 1
 engineer.tasks
 engineer.taskDone()
 engineer.tasks
+
+print()
+
+
+// 1. protocol
+// 2. obj1: property weak var delegate: ProtocolDelegate?
+// 3. obj2: :ProtocolDelegate
+
+//screen
+class ViewController {
+    var payView: PayView?
+
+    //To get action from PayView we need to subscribe on delegate
+    //In view did load
+    //Or
+    //In init
+
+    init(payView: PayView) {
+        self.payView = payView
+        payView.delegate = self
+    }
+}
+
+extension ViewController: PayViewDelegate {
+    func didPressPayButton() {
+        //show pay screen
+    }
+}
+
+protocol PayViewDelegate: AnyObject {
+    func didPressPayButton()
+}
+
+//little view (button or label or cell or search bar...)
+class PayView {
+    weak var delegate: PayViewDelegate?
+
+    func action() {
+        //add animation
+        delegate?.didPressPayButton()
+    }
+}
