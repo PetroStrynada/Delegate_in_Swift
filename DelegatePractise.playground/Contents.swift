@@ -93,7 +93,7 @@ extension Client: EngineerTaskDelegate {
 
 var engineer = Engineer()
 var manager = ProjectManager()
-engineer.delegate = manager
+engineer.taskDelegate = manager
 manager.engineer = engineer
 manager.addTaskToEngineer()
 
@@ -112,11 +112,11 @@ engineer.tasks
 
 //disconnect. manager dismissed. engineer on bench
 manager.engineer = nil
-engineer.delegate = nil
+engineer.taskDelegate = nil
 
 var client = Client()
 client.engineer = engineer
-engineer.delegate = client
+engineer.taskDelegate = client
 
 engineer.tasks
 engineer.tasks += 1
