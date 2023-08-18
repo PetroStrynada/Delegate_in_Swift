@@ -74,7 +74,7 @@ class Client  {
 
 extension Client: EngineerTaskDelegate {
     func tasksHasEnded() {
-        //think about requirements
+        // think about requirements
         // think about tasks
         print("Add tasks to engineer")
         engineer?.tasks += 1
@@ -93,7 +93,7 @@ extension Client: EngineerTaskDelegate {
 
 var engineer = Engineer()
 var manager = ProjectManager()
-engineer.delegate = manager
+engineer.taskDelegate = manager
 manager.engineer = engineer
 manager.addTaskToEngineer()
 
@@ -110,13 +110,13 @@ engineer.taskDone(2)
 
 engineer.tasks
 
-//disconnect. manager dismissed. engineer on bench
+// disconnect. manager dismissed. engineer on bench
 manager.engineer = nil
-engineer.delegate = nil
+engineer.taskDelegate = nil
 
 var client = Client()
 client.engineer = engineer
-engineer.delegate = client
+engineer.taskDelegate = client
 
 engineer.tasks
 engineer.tasks += 1
@@ -135,10 +135,10 @@ print()
 //screen
 class ViewController {
     var payView: [PayView]
-    //To get action from PayView we need to subscribe on delegate
-    //In view did load
-    //Or
-    //In init
+    // To get action from PayView we need to subscribe on delegate
+    // In view did load
+    // Or
+    // In init
     init(payView: [PayView]) {
         self.payView = payView
         payView.forEach { $0.delegate = self }
