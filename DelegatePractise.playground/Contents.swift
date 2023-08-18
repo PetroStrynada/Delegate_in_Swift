@@ -125,38 +125,52 @@ print()
 // 1. protocol
 // 2. obj1: property weak var delegate: ProtocolDelegate?
 // 3. obj2: :ProtocolDelegate
+// 4. find out who the notification is coming from
 
 //screen
 class ViewController {
-    var payView: PayView?
-
+    var payView: [PayView]
     //To get action from PayView we need to subscribe on delegate
     //In view did load
     //Or
     //In init
-
-    init(payView: PayView) {
+    init(payView: [PayView]) {
         self.payView = payView
-        payView.delegate = self
+        payView.forEach { $0.delegate = self }
     }
 }
 
 extension ViewController: PayViewDelegate {
-    func didPressPayButton() {
-        //show pay screen
+    func didPressPayButton(_ view: PayView) {
+        print("show pay screen for \(view.price)")
     }
 }
 
 protocol PayViewDelegate: AnyObject {
-    func didPressPayButton()
+    func didPressPayButton(_ view: PayView) // UIView
 }
 
 //little view (button or label or cell or search bar...)
 class PayView {
+    var price: Double = 0.0
     weak var delegate: PayViewDelegate?
 
     func action() {
         //add animation
-        delegate?.didPressPayButton()
+        delegate?.didPressPayButton(self)
     }
 }
+
+var monitor = PayView()
+monitor.price = 500
+var headset = PayView()
+headset.price = 300
+var mouse = PayView()
+mouse.price = 50
+
+//to show on screen
+var screen = ViewController(payView: [monitor, headset, mouse])
+
+monitor.action()
+mouse.action()
+headset.action()
